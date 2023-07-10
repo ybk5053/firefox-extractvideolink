@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="options.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <!-- Tab links -->
+    <div id="tabs" class="tab">
+        <button id="addtab" class="tablinks"><i class="fa fa-plus" aria-hidden="true"></i></button>
+    </div>
+
+    <!-- Tab content -->
+    <div class="tabcontent">
+        <p id="action" hidden>0</p>
+        <div>
+            <label class="label"> Name:
+                <input id="name" type="text">
+            </label>
+        </div>
+        <div>
+            <select id="type">
+                <option value="aria">Aria2c </option>
+                <option value="webhook">Web Request</option>
+                <!-- <option value="script">Custom Script</option> -->
+            </select>
+        </div>
+        <div class="aria" hidden>
+            <h3 style="margin: 10px;">Aria2c</h3>
+            <label class="label"> Aria URL(include port):
+                <br>
+                <input id="ariaurl" type="text">
+            </label>
+            <br>
+            <label class="label"> Secret:
+                <br>
+                <input id="secret" type="password">
+            </label>
+        </div>
+        <div class="webhook" hidden>
+            <h3 style="margin: 10px;">Web Request</h3>
+            <label class="label"> URL(include port):
+                <br>
+                <input id="weburl" type="text">
+            </label>
+            <br>
+            <label class="label"> Request Type:
+                <br>
+                <select id="req">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                </select>
+            </label>
+            <br>
+            <label id="header" class="label""> Headers:
+                <br>
+                <label>key:<input type="text"></label>
+                <label>value:<input type="text"></label>
+                <br>
+                <input id="addheader" type="button" value="Add" style="position: absolute; left: 85%">
+            </label>
+            <br><br>
+            <label class="label" style="width: 100%;"> Body:
+                <br>
+                <input id="body" type="text" style="height: 50px; width: 90%;">
+            </label>
+        </div>
+        <div class="script" hidden>
+            <h3 style="margin: 10px;">Javascript</h3>
+            <label class="label"> Script:
+                <br>
+                <input id="script" type="text" style="height: 50px; width: 90%;">
+            </label>
+        </div>
+        <div>
+            <input id="save" type="button" value="Save">
+            <input id="del" type="button" value="Delete">
+        </div>
+    </div>
+    <script src="options.js"></script>
+</body>
+
+</html>

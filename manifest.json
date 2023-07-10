@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "Extract Video Link",
+  "version": "2.11",
+  "icons": {
+    "48": "icons8-bt21-koya-48.png"
+  },
+  "description": "Extract Video Link with aria2c support",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
+  "permissions": [
+    "<all_urls>",
+    "storage",
+    "tabs",
+    "webRequest"
+  ],
+  "browser_action": {
+    "default_icon": "icons8-bt21-koya-48.png",
+    "default_title": "Extract Video Link",
+    "default_popup": "popup.html",
+    "browser_style": true
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{bd3d8e6a-1518-40b9-92ff-e21f2d968152}"
+    }
+  }
+}

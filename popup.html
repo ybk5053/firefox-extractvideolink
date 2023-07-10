@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+  <h2 id="header"></h2>
+  <div>
+    <select id="action" type="text" style="width:50%; font-size: inherit; margin-left: 5%;"></select>
+    <select id="select" style="font-size: inherit; width: 10%;"></select>
+    <input id="run" type="button" value="Start" style="font-size: inherit;" disabled>
+    <p id="sss" class="sss">Success</p>
+    <p id="fff" class="fff">Error</p>
+  </div>
+  <table id="table">
+    <thead>
+      <tr>
+        <th>FMT</th>
+        <th style="width:60%">Link</th>
+        <th><i class="fa fa-files-o fa-2xl">Headers</i></th>
+      </tr>
+    </thead>
+  </table>
+  <div style="margin-left: 5%; margin-top: 5px; margin-bottom: 5px;">
+    <button id="option" style="width:fit-content; font-size: inherit;"><i class="fa fa-cog" aria-hidden="true"><nbsp></nbsp>Options</i></button>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

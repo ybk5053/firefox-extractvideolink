@@ -1,0 +1,73 @@
+h2 {
+    margin-left: 5%;
+    color: rgb(212, 212, 212);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+table {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+th,
+td {
+    border: 1px solid;
+    text-align: center;
+    color: rgb(212, 212, 212);
+    font-family: cursive;
+    font-size: 10;
+    word-wrap: break-word;
+    max-width: 100px;
+}
+
+html,
+body {
+    width: 500px;
+    background-color: rgb(76, 76, 78);
+}
+
+a:link {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.copy {
+    position: relative;
+    display: inline-block;
+}
+
+.copy:hover {
+    cursor: pointer;
+}
+
+.sss {
+    display: none;
+    margin-left: 5%;
+    width: 15%;
+    background-color: rgb(8, 156, 8);
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+}
+
+.fff {
+    display: none;
+    margin-left: 5%;
+    width: 15%;
+    background-color: red;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+}
