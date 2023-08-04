@@ -1,7 +1,7 @@
 browser.tabs.onUpdated.addListener(handleUpdated)
 browser.tabs.onRemoved.addListener(handleClosed)
-browser.webRequest.onHeadersReceived.addListener(handleResponse, {urls: ["<all_urls>"]}, ["responseHeaders"])
-browser.webRequest.onBeforeSendHeaders.addListener(handleSendRequest, {urls: ["<all_urls>"]}, ["requestHeaders"])
+browser.webRequest.onHeadersReceived.addListener(handleResponse, { urls: ["<all_urls>"] }, ["responseHeaders"])
+browser.webRequest.onBeforeSendHeaders.addListener(handleSendRequest, { urls: ["<all_urls>"] }, ["requestHeaders"])
 
 async function handleUpdated(tabId, changeInfo, tab) {
     if (changeInfo.status === "complete") {
@@ -19,7 +19,7 @@ async function handleUpdated(tabId, changeInfo, tab) {
         return
     }
     let t = {}
-    t[id] = {"url": host, "media": []}
+    t[id] = { "url": host, "media": [] }
     browser.storage.local.set(t)
 }
 
@@ -39,18 +39,22 @@ function handleSendRequest(req) {
         return
     }
     let t = {}
-    t[req.requestId+"req"] = {headers: req.requestHeaders, tab: req.tabId}
+    t[req.requestId + "req"] = { headers: req.requestHeaders, tab: req.tabId }
     browser.storage.local.set(t)
 }
 
 function handleResponse(resp) {
+    const urlstr = resp.url
     headers = resp.responseHeaders.filter((header) => header.name == "content-type")
     if (headers.length == 0) {
         headers = resp.responseHeaders.filter((header) => header.name == "Content-Type")
     }
-    let type = headers[0]["value"]
+    if (headers.length == 0) {
+        return
+    }
     let t = resp.type
-    if ((!type.includes("video") || type.includes("video/MP2T")) && !type.includes("mpegurl") && !t.includes("media")) {
+    let type = headers[0]["value"]
+    if ((!type.includes("video") || type.includes("video/MP2T")) && !type.includes("mpegurl") && !t.includes("media") && !urlstr.includes(".m3u")) {
         return
     }
     t = type
@@ -60,10 +64,11 @@ function handleResponse(resp) {
         resp.url = resp.url.replace(/&rbuf=[0-9]*/i, "")
     }
 
+
     browser.storage.local.get(resp.tabId.toString()).then((val) => {
         if (val[resp.tabId] != null) {
-            if (val[resp.tabId]["media"].filter((x) => {return resp.url === x.link}).length < 1) { 
-                val[resp.tabId]["media"].push({link: resp.url, type: t, id: resp.requestId+"req"})
+            if (val[resp.tabId]["media"].filter((x) => { return resp.url === x.link }).length < 1) {
+                val[resp.tabId]["media"].push({ link: resp.url, type: t, id: resp.requestId + "req" })
                 browser.storage.local.set(val)
             }
         }
