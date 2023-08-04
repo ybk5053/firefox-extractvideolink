@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Extract Video Link",
-  "version": "2.11",
+  "version": "2.12",
   "icons": {
     "48": "icons8-bt21-koya-48.png"
   },
