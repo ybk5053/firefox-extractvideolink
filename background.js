@@ -43,14 +43,14 @@ function handleSendRequest(req) {
     browser.storage.local.set(t)
 
     if (req.url.includes(".m3u")) {
-        browser.storage.local.get(resp.tabId.toString()).then((val) => {
-        if (val[req.tabId] != null) {
-            if (val[req.tabId]["media"].filter((x) => { return req.url === x.link }).length < 1) {
-                val[req.tabId]["media"].push({ link: req.url, type: "m3u", id: req.requestId + "req" })
-                browser.storage.local.set(val)
+        browser.storage.local.get(req.tabId.toString()).then((val) => {
+            if (val[req.tabId] != null) {
+                if (val[req.tabId]["media"].filter((x) => { return req.url === x.link }).length < 1) {
+                    val[req.tabId]["media"].push({ link: req.url, type: "m3u", id: req.requestId + "req" })
+                    browser.storage.local.set(val)
+                }
             }
-        }
-    })
+        })
     }
 }
 

@@ -9,6 +9,19 @@
 </head>
 
 <body>
+    <h2>Settings</h2>
+    <div id="pkg" hidden>
+        <label class="label"> Package Name to open when tapping the URL:
+            <br>
+            <input type="text" id="pkgname" placeholder="Leave blank to ignore">
+        </label>
+        <div>
+            <input id="savepkg" type="button" value="Save">
+        </div>
+    </div>
+    <div class="header">
+        <h3>Action Settings:</h3>
+    </div>
     <!-- Tab links -->
     <div id="tabs" class="tab">
         <button id="addtab" class="tablinks"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -19,14 +32,13 @@
         <p id="action" hidden>0</p>
         <div>
             <label class="label"> Name:
-                <input id="name" type="text">
+                <input id="name" type="text" placeholder="Action Name">
             </label>
         </div>
         <div>
             <select id="type">
                 <option value="aria">Aria2c </option>
                 <option value="webhook">Web Request</option>
-                <!-- <option value="script">Custom Script</option> -->
             </select>
         </div>
         <div class="aria" hidden>
@@ -67,13 +79,6 @@
             <label class="label" style="width: 100%;"> Body:
                 <br>
                 <input id="body" type="text" style="height: 50px; width: 90%;">
-            </label>
-        </div>
-        <div class="script" hidden>
-            <h3 style="margin: 10px;">Javascript</h3>
-            <label class="label"> Script:
-                <br>
-                <input id="script" type="text" style="height: 50px; width: 90%;">
             </label>
         </div>
         <div>

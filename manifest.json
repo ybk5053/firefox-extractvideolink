@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Extract Video Link",
-  "version": "2.12",
+  "version": "2.18",
   "icons": {
     "48": "icons8-bt21-koya-48.png"
   },
@@ -29,7 +29,10 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "{bd3d8e6a-1518-40b9-92ff-e21f2d968152}"
+      "id": "{bd3d8e6a-1518-40b9-92ff-e21f2d968152}",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }

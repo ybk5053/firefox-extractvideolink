@@ -15,6 +15,16 @@ browser.storage.local.get("action").then((s) => {
         clearmsg()
         addTab()
     }
+    document.getElementById("savepkg").onclick = function () {
+        savePkg()
+    }
+    loadPkg()
+})
+
+browser.runtime.getPlatformInfo().then((info) => {
+    if (info.os === browser.runtime.PlatformOs.ANDROID) {
+        document.getElementById("pkg").hidden = false
+    }
 })
 
 rendertype(document.getElementById("type").value)
@@ -53,18 +63,11 @@ function rendertype(type) {
     switch (type) {
         case "aria":
             document.getElementsByClassName("aria")[0].hidden = false
-            document.getElementsByClassName("script")[0].hidden = true
             document.getElementsByClassName("webhook")[0].hidden = true
             break;
         case "webhook":
             document.getElementsByClassName("aria")[0].hidden = true
-            document.getElementsByClassName("script")[0].hidden = true
             document.getElementsByClassName("webhook")[0].hidden = false
-            break;
-        case "script":
-            document.getElementsByClassName("aria")[0].hidden = true
-            document.getElementsByClassName("script")[0].hidden = false
-            document.getElementsByClassName("webhook")[0].hidden = true
             break;
     }
 }
@@ -76,7 +79,6 @@ function renderTab(tab) {
         }
         document.getElementById("ariaurl").value = ""
         document.getElementById("secret").value = ""
-        document.getElementById("script").value = ""
         document.getElementById("weburl").value = ""
         document.getElementById("body").value = ""
         document.getElementById("req").value = "GET"
@@ -94,9 +96,6 @@ function renderTab(tab) {
         if (a["type"] === "aria") {
             document.getElementById("ariaurl").value = a["host"]
             document.getElementById("secret").value = a["secret"]
-        }
-        if (a["type"] === "script") {
-            document.getElementById("script").value = a["script"]
         }
         if (a["type"] === "webhook") {
             document.getElementById("weburl").value = a["host"]
@@ -142,7 +141,7 @@ function initAction(tab) {
         if (!s["action"]) {
             s["action"] = {}
         }
-        s["action"][tab] = { name: "", host: "", secret: "", script: "", body: "", req: "", headers: {}, type: "aria" }
+        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria" }
         browser.storage.local.set(s)
     })
 }
@@ -181,7 +180,7 @@ function delTab(tab) {
 
 function saveAction(tab) {
     browser.storage.local.get("action").then((s) => {
-        s["action"][tab] = { name: "", host: "", secret: "", script: "", body: "", req: "", headers: {}, type: "aria" }
+        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria" }
         let a = s["action"][tab]
         a["name"] = document.getElementById("name").value
         a["type"] = document.getElementById("type").value
@@ -206,13 +205,6 @@ function saveAction(tab) {
                 i++
             }
         }
-        if (a["type"] === "script") {
-            // a["script"] = document.getElementById("script").value
-            let msg = document.createElement("div")
-            msg.classList.add("fail")
-            msg.innerText = "Script disabled"
-            document.body.appendChild(msg)
-        }
         browser.storage.local.set(s)
         renderTab(tab)
 
@@ -220,6 +212,18 @@ function saveAction(tab) {
         msg.classList.add("success")
         msg.innerText = "Done"
         document.body.appendChild(msg)
+    })
+}
+
+function savePkg() {
+    browser.storage.local.set({ "pkgname": document.getElementById("pkgname").value })
+}
+
+function loadPkg() {
+    browser.storage.local.get("pkgname").then((s) => {
+        if (s["pkgname"]) {
+            document.getElementById("pkgname").value = s["pkgname"]
+        }
     })
 }
 

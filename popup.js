@@ -50,25 +50,6 @@ document.getElementById("run").onclick = function () {
                         xmlHttp.send(data)
                         return
                     }
-                    if (act["type"] === "script") {
-                        // let script = act["script"]
-                        // script.replace("{{url}}", url)
-                        // script.replace("{{ url }}", url)
-                        // script.replace("{{referer}}", referer)
-                        // script.replace("{{ referer }}", referer)
-                        // try {
-                        //     eval(script)
-                        //     document.getElementById("fff").style.display = "none"
-                        //     document.getElementById("sss").style.display = "inline-block"
-                        // } catch (err) {
-                        //     console.log(err)
-                        //     document.getElementById("fff").style.display = "inline-block"
-                        //     document.getElementById("sss").style.display = "none"
-                        //     return
-                        // }
-                        console.log("script disabled")
-                        return
-                    }
                     if (act["type"] === "webhook") {
                         let host = act["host"]
                         let req = act["req"]
@@ -140,69 +121,73 @@ browser.runtime.getPlatformInfo().then((info) => {
 }).then((tab) => {
     return browser.storage.local.get(tab[0].id.toString())
 }).then((storage) => {
-    for (let key in storage) {
-        document.getElementById("header").innerText = storage[key]["url"].toUpperCase()
-        for (let i in storage[key]["media"]) {
-            document.getElementById("run").disabled = false
-            let table = document.getElementById("table")
-            let row = table.insertRow(table.rows.length)
-            let cell = row.insertCell(0)
-            cell.appendChild(document.createTextNode(i + ": " + storage[key]["media"][i]["type"].slice(0, 20)))
-            cell = row.insertCell(1)
-            let a = document.createElement("a")
-            a.href = storage[key]["media"][i]["link"]
-            let f = storage[key]["media"][i]["link"].split("?")[0]
-            f = f.split("/")
-            f = f[f.length - 1]
-            a.appendChild(document.createTextNode(storage[key]["media"][i]["link"].slice(0, 50)))
-            a.appendChild(document.createElement("br"))
-            a.appendChild(document.createTextNode(f))
-            if (android) {
-                a.onclick = function () {
-                    let [scheme, url] = storage[key]["media"][i]["link"].split('://');
-                    let intentOpts = [
-                        'action=android.intent.action.VIEW',
-                        'scheme=' + scheme,
-                        'category=android.intent.category.DEFAULT',
-                        'type=video/*',
-                    ];
-                    browser.tabs.create({
-                        url: `intent://${url}#Intent;${intentOpts.join(';')};end`,
-                    });
-                    navigator.clipboard.writeText(storage[key]["media"][i]["link"])
-                    return false
+    browser.storage.local.get("pkgname").then((pkgname) => {
+        for (let key in storage) {
+            document.getElementById("header").innerText = storage[key]["url"].toUpperCase()
+            for (let i in storage[key]["media"]) {
+                document.getElementById("run").disabled = false
+                let table = document.getElementById("table")
+                let row = table.insertRow(table.rows.length)
+                let cell = row.insertCell(0)
+                cell.appendChild(document.createTextNode(i + ": " + storage[key]["media"][i]["type"].slice(0, 20)))
+                cell = row.insertCell(1)
+                let a = document.createElement("a")
+                a.href = storage[key]["media"][i]["link"]
+                let f = storage[key]["media"][i]["link"].split("?")[0]
+                f = f.split("/")
+                f = f[f.length - 1]
+                a.appendChild(document.createTextNode(storage[key]["media"][i]["link"].slice(0, 50)))
+                a.appendChild(document.createElement("br"))
+                a.appendChild(document.createTextNode(f))
+                if (android) {
+                    a.onclick = function () {
+                        let [scheme, url] = storage[key]["media"][i]["link"].split('://');
+                        let intentOpts = [
+                            'action=android.intent.action.VIEW',
+                            'scheme=' + scheme,
+                            'category=android.intent.category.DEFAULT',
+                            'type=video/*',
+                        ];
+                        if (pkgname["pkgname"]) {
+                            intentOpts.push('package=' + pkgname["pkgname"]);
+                        }
+                        browser.tabs.create({
+                            url: `intent://${url}#Intent;${intentOpts.join(';')};end`,
+                        });
+                        navigator.clipboard.writeText(storage[key]["media"][i]["link"])
+                        return false
+                    }
                 }
-            }
-            cell.appendChild(a)
-            cell = row.insertCell(2)
-            let b = document.createElement("button")
-            b.onclick = function () {
-                browser.storage.local.get(storage[key]["media"][i]["id"]).then((s) => {
-                    let h = s[storage[key]["media"][i]["id"]]["headers"]
-                    h = h.map((o) => {
-                        return o["name"] + ":" + o["value"]
+                cell.appendChild(a)
+                cell = row.insertCell(2)
+                let b = document.createElement("button")
+                b.onclick = function () {
+                    browser.storage.local.get(storage[key]["media"][i]["id"]).then((s) => {
+                        let h = s[storage[key]["media"][i]["id"]]["headers"]
+                        h = h.map((o) => {
+                            return o["name"] + ":" + o["value"]
+                        })
+                        navigator.clipboard.writeText(h.join("\n"))
                     })
-                    navigator.clipboard.writeText(h.join("\n"))
-                })
+                }
+                b.style["font-size"] = "inherit"
+                b.style.borderRadius = "5px"
+                let icon = document.createElement("i")
+                icon.classList.add("fa")
+                icon.classList.add("fa-files-o")
+                icon.classList.add("fa-2xl")
+                icon.classList.add("copy")
+                b.appendChild(icon)
+                cell.appendChild(b)
+                let option = document.createElement("option")
+                option.value = i
+                option.innerText = i.toString()
+                document.getElementById("select").appendChild(option)
             }
-            b.style["font-size"] = "inherit"
-            b.style.borderRadius = "5px"
-            let icon = document.createElement("i")
-            icon.classList.add("fa")
-            icon.classList.add("fa-files-o")
-            icon.classList.add("fa-2xl")
-            icon.classList.add("copy")
-            b.appendChild(icon)
-            cell.appendChild(b)
-            let option = document.createElement("option")
-            option.value = i
-            option.innerText = i.toString()
-            document.getElementById("select").appendChild(option)
         }
-    }
+    })
 })
 
 document.getElementById("option").onclick = function() {
-    console.log("hihihi")
     browser.runtime.openOptionsPage()
 }
