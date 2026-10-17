@@ -2,6 +2,7 @@ browser.tabs.onUpdated.addListener(handleUpdated)
 browser.tabs.onRemoved.addListener(handleClosed)
 browser.webRequest.onHeadersReceived.addListener(handleResponse, { urls: ["<all_urls>"] }, ["responseHeaders"])
 browser.webRequest.onSendHeaders.addListener(handleSendRequest, { urls: ["<all_urls>"] }, ["requestHeaders"])
+browser.tabs.onActivated.addListener(handleTabActivated)
 
 async function handleUpdated(tabId, changeInfo, tab) {
     if (changeInfo.status === "complete") {
@@ -30,6 +31,11 @@ async function handleClosed(tabId, removeInfo) {
             if (s[k]["tab"] === tabId) {
                 browser.storage.local.remove(k)
             }
+        }
+    })
+    browser.windows.getAll().then((wins) => {
+        if (wins.length < 1) {
+            browser.storage.local.clear()
         }
     })
 }
@@ -81,6 +87,21 @@ function handleResponse(resp) {
                 val[resp.tabId]["media"].push({ link: resp.url, type: t, id: resp.requestId + "req" })
                 browser.storage.local.set(val)
             }
+        }
+    })
+}
+
+async function handleTabActivated(activeInfo) {
+    setBadgeText(activeInfo.tabId)
+}
+
+async function setBadgeText(tabID) {
+    browser.storage.local.get(tabID).then((val) => {
+        if (val[tabID] != null) {
+            let count = val[tabID]["media"].length
+            browser.browserAction.setBadgeText({ text: count.toString() })
+        } else {
+            browser.browserAction.setBadgeText({ text: "" })
         }
     })
 }
