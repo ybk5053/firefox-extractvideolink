@@ -55,6 +55,7 @@ function handleSendRequest(req) {
                     val[req.tabId]["media"].push({ link: req.url, type: "m3u", id: req.requestId + "req" })
                     browser.storage.local.set(val)
                 }
+                setBadgeText(req.tabId)
             }
         })
     }
@@ -87,6 +88,7 @@ function handleResponse(resp) {
                 val[resp.tabId]["media"].push({ link: resp.url, type: t, id: resp.requestId + "req" })
                 browser.storage.local.set(val)
             }
+            setBadgeText(resp.tabId)
         }
     })
 }
@@ -96,10 +98,15 @@ async function handleTabActivated(activeInfo) {
 }
 
 async function setBadgeText(tabID) {
-    browser.storage.local.get(tabID).then((val) => {
+    browser.storage.local.get(tabID.toString()).then((val) => {
+        console.log(tabID)
         if (val[tabID] != null) {
             let count = val[tabID]["media"].length
-            browser.browserAction.setBadgeText({ text: count.toString() })
+            if (count > 0) {
+                browser.browserAction.setBadgeText({ text: count.toString() })
+            } else {
+                browser.browserAction.setBadgeText({ text: "" })
+            }
         } else {
             browser.browserAction.setBadgeText({ text: "" })
         }
