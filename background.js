@@ -38,7 +38,7 @@ async function handleClosed(tabId, removeInfo) {
             browser.storage.local.get("action").then((s) => {
                 browser.storage.local.clear()
                 browser.storage.local.set(s)
-            }
+            })
         }
     })
 }
