@@ -88,6 +88,7 @@ function renderTab(tab) {
         }
         document.getElementById("header").children[1].children[0].value = ""
         document.getElementById("header").children[2].children[0].value = ""
+        document.getElementById("variable").value = 0
 
         let a = s["action"][tab]
         document.getElementById("name").value = a["name"]
@@ -142,7 +143,7 @@ function initAction(tab) {
         if (!s["action"]) {
             s["action"] = {}
         }
-        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria" }
+        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria", variable: "0"}
         browser.storage.local.set(s)
     })
 }
@@ -181,7 +182,7 @@ function delTab(tab) {
 
 function saveAction(tab) {
     browser.storage.local.get("action").then((s) => {
-        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria" }
+        s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria", variable: "0" }
         let a = s["action"][tab]
         a["name"] = document.getElementById("name").value
         a["type"] = document.getElementById("type").value

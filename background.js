@@ -99,7 +99,6 @@ async function handleTabActivated(activeInfo) {
 
 async function setBadgeText(tabID) {
     browser.storage.local.get(tabID.toString()).then((val) => {
-        console.log(tabID)
         if (val[tabID] != null) {
             let count = val[tabID]["media"].length
             if (count > 0) {
