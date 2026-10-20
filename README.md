@@ -7,3 +7,6 @@ In Web Request body:\
 {{referer}} = referer url\
 {{var1-var9}} = optional variables
 
+eg:
+```{"url": "{{url}}", "referer": "{{referer}}"}```
+
