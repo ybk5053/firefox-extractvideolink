@@ -35,7 +35,10 @@ async function handleClosed(tabId, removeInfo) {
     })
     browser.windows.getAll().then((wins) => {
         if (wins.length < 1) {
-            browser.storage.local.clear()
+            browser.storage.local.get("action").then((s) => {
+                browser.storage.local.clear()
+                browser.storage.local.set(s)
+            }
         }
     })
 }
