@@ -101,6 +101,7 @@ function renderTab(tab) {
             document.getElementById("weburl").value = a["host"]
             document.getElementById("body").value = a["body"]
             document.getElementById("req").value = a["req"]
+            document.getElementById("variable").value = a["variable"]
             for (let k in a["headers"]) {
                 let h = document.getElementById("header")
                 h.insertBefore(document.createElement("br"), h.children[1])
@@ -192,6 +193,7 @@ function saveAction(tab) {
             a["host"] = document.getElementById("weburl").value
             a["body"] = document.getElementById("body").value
             a["req"] = document.getElementById("req").value
+            a["variable"] = document.getElementById("variable").value
             let h = document.getElementById("header").children
             for (let i = 0; i < h.length; i++) {
                 if (h[i].nodeName === "BR" || h[i].id === "addheader") {

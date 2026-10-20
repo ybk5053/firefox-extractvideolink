@@ -53,6 +53,10 @@ document.getElementById("run").onclick = function () {
                     if (act["type"] === "webhook") {
                         let host = act["host"]
                         let req = act["req"]
+                        let variables = []
+                        for (let v=1; v<=act["variable"]; v++) {
+                            variables[v] = document.getElementById("var"+v.toString()).value
+                        }
 
                         let xmlHttp = new XMLHttpRequest()
                         xmlHttp.onerror = function (err) {
@@ -85,6 +89,10 @@ document.getElementById("run").onclick = function () {
                         body = body.replace("{{ url }}", url)
                         body = body.replace("{{ referer }}", referer)
                         body = body.replace("{{referer}}", referer)
+                        for (let v=1; v<=act["variable"]; v++) {
+                            body = body.replace("{{var"+v.toString()+"}}", variables[v])
+                            body = body.replace("{{ var"+v.toString()+" }}", variables[v])
+                        }
                         xmlHttp.send(body)
                         return
                     }
@@ -103,7 +111,24 @@ browser.storage.local.get("action").then((s) => {
             document.getElementById("action").appendChild(option)
         }
     }
+    document.getElementById("action").onchange = showVars()
+    showVars()
 })
+
+async function showVars() {
+    browser.storage.local.get("action").then ((s) => {
+        let i = s["action"][document.getElementById("action").value]["variable"] || "0"
+        for (let j=1; j<=parseInt(i, 10); j++) {
+            let id = "var" + j.toString()
+            document.getElementById(id).hidden = false
+        }
+        for (let j=9; j>parseInt(i, 10); j--) {
+            let id = "var" + j.toString()
+            document.getElementById(id).hidden = true
+
+        }
+    })
+}
 
 let android = false
 browser.runtime.getPlatformInfo().then((info) => {
