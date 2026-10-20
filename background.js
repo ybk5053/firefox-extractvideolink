@@ -103,6 +103,8 @@ async function setBadgeText(tabID) {
             let count = val[tabID]["media"].length
             if (count > 0) {
                 browser.browserAction.setBadgeText({ text: count.toString() })
+            } else if (count > 99) {
+                browser.browserAction.setBadgeText({ text: "99+" })
             } else {
                 browser.browserAction.setBadgeText({ text: "" })
             }

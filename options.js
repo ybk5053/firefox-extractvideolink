@@ -102,7 +102,7 @@ function renderTab(tab) {
             document.getElementById("weburl").value = a["host"]
             document.getElementById("body").value = a["body"]
             document.getElementById("req").value = a["req"]
-            document.getElementById("variable").value = a["variable"]
+            document.getElementById("variable").value = a["variable"] || 0
             for (let k in a["headers"]) {
                 let h = document.getElementById("header")
                 h.insertBefore(document.createElement("br"), h.children[1])
@@ -145,6 +145,7 @@ function initAction(tab) {
         }
         s["action"][tab] = { name: "", host: "", secret: "", body: "", req: "", headers: {}, type: "aria", variable: "0"}
         browser.storage.local.set(s)
+        openTab(tab)
     })
 }
 

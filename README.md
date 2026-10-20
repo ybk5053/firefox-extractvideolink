@@ -4,5 +4,6 @@ Firefox addon to extract video links
 
 In Web Request body:\
 {{url}} = url\
-{{referer}} = referer url
+{{referer}} = referer url\
+{{var1-var9}} = optional variables
 
