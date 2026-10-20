@@ -111,7 +111,7 @@ browser.storage.local.get("action").then((s) => {
             document.getElementById("action").appendChild(option)
         }
     }
-    document.getElementById("action").onchange = showVars()
+    document.getElementById("action").onchange = showVars
     showVars()
 })
 
